@@ -1,0 +1,82 @@
+call plug#begin()
+	"FZF
+	Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+	Plug 'junegunn/fzf.vim'
+	"COC
+	Plug 'neoclide/coc.nvim', {'branch': 'release'}
+	"EMMET
+	Plug 'mattn/emmet-vim'
+	"COLORES
+	Plug 'glepnir/oceanic-material' 
+	Plug 'gko/vim-coloresque'
+	Plug 'luochen1990/rainbow'
+	"ARPEGGIO
+	Plug 'kana/vim-arpeggio'
+	"NERD COMMENTER
+	Plug 'preservim/nerdcommenter'
+	"LARAVEL
+	Plug 'tpope/vim-dispatch'
+	Plug 'tpope/vim-projectionist'
+	Plug 'noahfrederick/vim-composer'
+	Plug 'noahfrederick/vim-laravel'
+
+call plug#end()
+
+"LEADER
+let mapleader = ","
+"FZF
+nnoremap <C-p> :Files<Cr>
+"COLORS
+set background=dark     			"oceanic_material
+colorscheme oceanic_material		"oceanic_material
+let g:rainbow_active = 1    		"rainbow
+"NERD COMMENTER
+filetype plugin on
+let g:NERDCreateDefaultMappings = 1	" Create default mappings
+"ARPEGGIO
+call arpeggio#map('i', '', 0, ',.', '<Esc>:w<CR>')
+call arpeggio#map('n', '', 0, ',.', ':w<CR>')
+"NRO DE LINEA
+set number
+"LINEA DEL CURSOR
+set cursorline
+"CIERRA COMILLAS Y CORCHETES ETC.
+inoremap " ""<left>
+inoremap ' ''<left>
+inoremap ( ()<left>
+inoremap [ []<left>
+inoremap { {}<left>
+inoremap {{ {{}}<left><left><space><space><left>
+inoremap -- ->
+inoremap == =>
+"TABS
+set tabstop=4
+set shiftwidth=4
+"COC
+" use <tab> to trigger completion and navigate to the next complete item
+function! CheckBackspace() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+inoremap <silent><expr> <Tab>
+      \ coc#pum#visible() ? coc#pum#next(1) :
+      \ CheckBackspace() ? "\<Tab>" :
+      \ coc#refresh()
+inoremap <expr> <cr> coc#pum#visible() ? coc#pum#confirm() : "\<CR>"
+" Use K to show documentation in preview window
+nnoremap <silent> K :call ShowDocumentation()<CR>
+function! ShowDocumentation()
+  if CocAction('hasProvider', 'hover')
+    call CocActionAsync('doHover')
+  else
+    call feedkeys('K', 'in')
+  endif
+endfunction
+" Add `:Format` command to format current buffer
+command! -nargs=0 Format :call CocActionAsync('format')
+" GoTo code navigation
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
