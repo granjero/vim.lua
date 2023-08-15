@@ -132,6 +132,10 @@ require('lazy').setup({
   },
 
   {
+    'gko/vim-coloresque'
+  },
+
+  {
     -- Set lualine as statusline
     'nvim-lualine/lualine.nvim',
     -- See `:help lualine.txt`
