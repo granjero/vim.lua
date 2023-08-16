@@ -4,6 +4,9 @@
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
+-- NOTE: You should make sure your terminal supports this
+vim.o.termguicolors = true
+
 -- Install package manager
 --    https://github.com/folke/lazy.nvim
 --    `:help lazy.nvim.txt` for more info
@@ -47,7 +50,7 @@ require('lazy').setup({
 
       -- Useful status updates for LSP
       -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
-      { 'j-hui/fidget.nvim', tag = 'legacy', opts = {} },
+      { 'j-hui/fidget.nvim',       tag = 'legacy', opts = {} },
 
       -- Additional lua configuration, makes nvim stuff amazing!
       'folke/neodev.nvim',
@@ -71,7 +74,7 @@ require('lazy').setup({
   },
 
   -- Useful plugin to show you pending keybinds.
-  { 'folke/which-key.nvim', opts = {} },
+  { 'folke/which-key.nvim',  opts = {} },
   {
     -- Adds git related signs to the gutter, as well as utilities for managing changes
     'lewis6991/gitsigns.nvim',
@@ -85,54 +88,12 @@ require('lazy').setup({
         changedelete = { text = '~' },
       },
       on_attach = function(bufnr)
-        vim.keymap.set('n', '<leader>gp', require('gitsigns').prev_hunk, { buffer = bufnr, desc = '[G]o to [P]revious Hunk' })
+        vim.keymap.set('n', '<leader>gp', require('gitsigns').prev_hunk,
+          { buffer = bufnr, desc = '[G]o to [P]revious Hunk' })
         vim.keymap.set('n', '<leader>gn', require('gitsigns').next_hunk, { buffer = bufnr, desc = '[G]o to [N]ext Hunk' })
         vim.keymap.set('n', '<leader>ph', require('gitsigns').preview_hunk, { buffer = bufnr, desc = '[P]review [H]unk' })
       end,
     },
-  },
-
-  -- COLORES
-  --
-  -- {
-  --   -- Theme inspired by Atom
-  --   'navarasu/onedark.nvim',
-  --   priority = 1000,
-  --   config = function()
-  --     vim.cmd.colorscheme 'onedark'
-  --   end,
-  -- },
-  -- {
-  --   'glepnir/oceanic-material',
-  --   config = function ()
-  --     vim.cmd('set background=dark')
-  --     vim.cmd('colorscheme oceanic_material')
-  --   end
-  -- },
-
-  -- {
-  --   'wadackel/vim-dogrun',
-  --   config = function ()
-  --     vim.cmd('colorscheme dogrun')
-  --   end
-  -- },
-
-  -- {
-  --   'mhartington/oceanic-next',
-  --   config = function ()
-  --     vim.cmd('colorscheme OceanicNext')
-  --   end
-  -- },
-
-  {
-    'phanviet/vim-monokai-pro',
-    config = function ()
-      vim.cmd('colorscheme monokai_pro')
-    end
-  },
-
-  {
-    'gko/vim-coloresque'
   },
 
   {
@@ -201,20 +162,38 @@ require('lazy').setup({
   -- JM
   {
     'kana/vim-arpeggio',
-    config = function ()
+    config = function()
       vim.api.nvim_command('call arpeggio#map("i", "", 0, ",.", "<Esc>:w<CR>")')
       vim.api.nvim_command('call arpeggio#map("n", "", 0, ",.", ":w<CR>")')
     end
   },
 
-  { 'tpope/vim-dispatch' },
+  -- Vim support for Laravel/Lumen projects.
+  {
+    'noahfrederick/vim-laravel',
+    dependencies = {
+      'noahfrederick/vim-composer',
+      'tpope/vim-projectionist',
+      'tpope/vim-dispatch',
+    },
+  },
 
-  { 'tpope/vim-projectionist' },
+  -- COLORES
+  {
+    'phanviet/vim-monokai-pro',
+    config = function()
+      vim.cmd('colorscheme monokai_pro')
+    end
+  },
 
-  { 'noahfrederick/vim-composer' },
+  {
+    'rrethy/vim-hexokinase',
+    run = 'make hexokinase',
+  },
 
-  { 'noahfrederick/vim-laravel' },
-
+  {
+    'mhartington/formatter.nvim',
+  },
   -- NOTE: Next Step on Your Neovim Journey: Add/Configure additional "plugins" for kickstart
   --       These are some example plugins that I've included in the kickstart repository.
   --       Uncomment any of the lines below to enable them.
@@ -234,6 +213,7 @@ require('lazy').setup({
 -- See `:help vim.o`
 -- NOTE: You can change these options as you wish!
 
+vim.g.Hexokinase_highlighters = { 'background' }
 -- Set highlight on search
 vim.o.hlsearch = false
 
@@ -268,29 +248,19 @@ vim.o.timeoutlen = 300
 -- Set completeopt to have a better completion experience
 vim.o.completeopt = 'menuone,noselect'
 
--- NOTE: You should make sure your terminal supports this
-vim.o.termguicolors = true
-
 -- cursor line
 vim.wo.cursorline = true
 
-
--- tabs 2
--- vim.cmd('set tabstop=12')
-vim.o.tabstop=8
-vim.o.shiftwidth=8
--- vim.cmd('set shiftwidth=12')
-
 -- [[ Basic Keymaps ]]
 -- Cierra comillas y eso
-vim.keymap.set({'i'}, '"', '""<left>', { noremap = true })
-vim.keymap.set({'i'}, '\'', '\'\'<left>', { noremap = true })
-vim.keymap.set({'i'}, '(', '()<left>', { noremap = true })
-vim.keymap.set({'i'}, '[', '[]<left>', { noremap = true })
-vim.keymap.set({'i'}, '{', '{}<left>', { noremap = true })
-vim.keymap.set({'i'}, '--', '->', { noremap = true })
-vim.keymap.set({'i'}, '==', '=>', { noremap = true })
-vim.keymap.set({'i'}, '{{', '{{}}<left><left><space><left>', { noremap = true })
+vim.keymap.set({ 'i' }, '"', '""<left>', { noremap = true })
+vim.keymap.set({ 'i' }, '\'', '\'\'<left>', { noremap = true })
+vim.keymap.set({ 'i' }, '(', '()<left>', { noremap = true })
+vim.keymap.set({ 'i' }, '[', '[]<left>', { noremap = true })
+vim.keymap.set({ 'i' }, '{', '{}<left>', { noremap = true })
+vim.keymap.set({ 'i' }, '--', '->', { noremap = true })
+vim.keymap.set({ 'i' }, '==', '=>', { noremap = true })
+vim.keymap.set({ 'i' }, '{{', '{{}}<left><left><space><left>', { noremap = true })
 
 -- Keymaps for better default experience
 -- See `:help vim.keymap.set()`
@@ -315,7 +285,7 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 -- See `:help telescope` and `:help telescope.setup()`
 require("telescope").load_extension "file_browser"
 
-vim.keymap.set('n', '<space>fb', ':Telescope file_browser<CR>', { noremap = true})
+vim.keymap.set('n', '<space>fb', ':Telescope file_browser<CR>', { noremap = true })
 
 require('telescope').setup {
   defaults = {
@@ -351,6 +321,7 @@ vim.keymap.set('n', '<leader>sg', require('telescope.builtin').live_grep, { desc
 vim.keymap.set('n', '<leader>sd', require('telescope.builtin').diagnostics, { desc = '[S]earch [D]iagnostics' })
 vim.keymap.set('n', '<leader>sr', require('telescope.builtin').registers, { desc = '[S]earch [R]egisters' })
 vim.keymap.set('n', '<leader>sb', require('telescope.builtin').buffers, { desc = '[S]earch [B]uffers' })
+vim.keymap.set('n', '<leader>f', ':Format<CR>', { noremap = true, desc = '[F]ormat File'})
 
 -- [[ Configure Treesitter ]]
 -- See `:help nvim-treesitter`
